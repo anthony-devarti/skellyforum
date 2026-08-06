@@ -1,0 +1,12 @@
+<%- include('../partials-head') %>
+<header><h1>Reveal History</h1></header>
+<main>
+  <p><a href="/admin/campaigns/<%= campaignId %>">← Back to campaign</a></p>
+  <% events.forEach(function(e){ %>
+    <div class="card">
+      <strong><%= e.action %></strong> <%= e.entity_type %>#<%= e.entity_id %>
+      <small>tag:<%= e.milestone_tag || '-' %> reason:<%= e.reason || '-' %> at <%= e.created_at %></small>
+    </div>
+  <% }) %>
+</main>
+<%- include('../partials-foot') %>

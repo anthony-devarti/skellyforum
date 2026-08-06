@@ -1,0 +1,32 @@
+{
+  "name": "skellyforum",
+  "version": "1.0.0",
+  "description": "light forum functionality intended to function as an emergent storytelling device",
+  "main": "app/server.js",
+  "scripts": {
+    "start": "node app/server.js",
+    "migrate": "node scripts/migrate.js",
+    "seed": "node scripts/seed.js",
+    "db:reset": "npm run migrate && npm run seed",
+    "test": "node --test tests/*.test.js",
+    "backup": "./scripts/backup.sh",
+    "restore": "./scripts/restore.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anthony-devarti/skellyforum.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.6.2"
+  },
+  "devDependencies": {
+    "supertest": "^7.2.2"
+  }
+}

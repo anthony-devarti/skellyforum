@@ -1,0 +1,8 @@
+body { background: #161622; color: #e4e4e4; font-family: 'Courier New', monospace; margin: 0; }
+header, nav, main { max-width: 980px; margin: 0 auto; padding: 12px; }
+a { color: #77c6ff; }
+.card { border: 1px solid #5f5f8f; background: #1f1f2f; padding: 10px; margin: 8px 0; }
+.grid { display: grid; gap: 8px; }
+input, textarea, select, button { background: #0f0f19; color: #f4f4f4; border: 1px solid #5f5f8f; padding: 6px; }
+button { cursor: pointer; }
+small { color: #babada; }

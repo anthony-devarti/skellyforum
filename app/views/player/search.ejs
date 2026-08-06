@@ -1,0 +1,16 @@
+<%- include('../partials-head') %>
+<header><h1>Search: <%= campaign.name %></h1><p><a href="/c/<%= campaign.slug %>">← Back</a></p></header>
+<main>
+  <form class="card" method="get" action="/c/<%= campaign.slug %>/search">
+    <input name="q" value="<%= query %>" placeholder="Search published posts" />
+    <button>Search</button>
+  </form>
+  <% posts.forEach(function(p){ %>
+    <div class="card">
+      <strong><%= p.thread_title %></strong>
+      <p><%= p.body %></p>
+      <a href="/c/<%= campaign.slug %>/thread/<%= p.thread_id %>">Open thread</a>
+    </div>
+  <% }) %>
+</main>
+<%- include('../partials-foot') %>
