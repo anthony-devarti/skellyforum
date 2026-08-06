@@ -116,6 +116,9 @@ function adminRouter(db) {
 
   router.post('/reveal/:entityType/:entityId', (req, res) => {
     const { entityType, entityId } = req.params;
+    if (!['thread', 'post'].includes(entityType)) {
+      return res.status(400).send('Invalid entity type');
+    }
     const table = entityType === 'thread' ? 'threads' : 'posts';
     const row = db.prepare(`SELECT campaign_id, manual_visible FROM ${table} WHERE id = ?`).get(entityId);
     if (!row) return res.status(404).send('Not found');

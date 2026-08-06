@@ -65,7 +65,7 @@ tests/
 ## Database Schema and Migrations
 
 Baseline schema is in:
-- `/home/runner/work/skellyforum/skellyforum/db/migrations/001_initial_schema.sql`
+- `db/migrations/001_initial_schema.sql`
 
 Primary tables included:
 - `campaigns`
@@ -83,7 +83,7 @@ Migration tooling:
 - `npm run migrate`
 
 Seed data:
-- `/home/runner/work/skellyforum/skellyforum/db/seeds/001_retro_seed.sql`
+- `db/seeds/001_retro_seed.sql`
 - `npm run seed`
 
 ## MVP Scaffold Included
@@ -146,7 +146,7 @@ Seed data:
 ## Local Setup
 
 ```bash
-cd /home/runner/work/skellyforum/skellyforum
+cd skellyforum
 cp .env.example .env
 npm install
 npm run migrate
@@ -171,3 +171,4 @@ Open: `http://localhost:3000`
 - Persist and back up `DB_PATH` data file regularly.
 - Keep `.env` outside version control.
 - Place reverse proxy (nginx/Caddy) in front for TLS and public access.
+- Tune `RATE_LIMIT_WINDOW_MS` and `RATE_LIMIT_MAX` for your expected traffic.

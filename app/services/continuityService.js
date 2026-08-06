@@ -49,15 +49,16 @@ function validateCampaign(db, campaignId) {
       .get(thread.id).count;
     const expectedReplies = Math.max(0, publishedCount - 1);
 
-    const metadataReplies = db
-      .prepare('SELECT COALESCE((SELECT count(*) - 1 FROM posts WHERE thread_id = ?), 0) AS replies')
-      .get(thread.id).replies;
+    const totalReplies = Math.max(
+      0,
+      db.prepare('SELECT COUNT(*) AS count FROM posts WHERE thread_id = ?').get(thread.id).count - 1
+    );
 
-    if (expectedReplies !== metadataReplies) {
+    if (totalReplies !== expectedReplies) {
       warnings.push({
         type: 'mismatched_counts',
         threadId: thread.id,
-        message: `Thread ${thread.title} has mismatched reply counts.`
+        message: `Thread ${thread.title} has hidden/draft replies that can drift visible forum counts.`
       });
     }
 

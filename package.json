@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://localhost:26831/anthony-devarti/skellyforum"
+    "url": "https://github.com/anthony-devarti/skellyforum.git"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +23,8 @@
     "better-sqlite3": "^13.0.3",
     "dotenv": "^17.4.2",
     "ejs": "^6.0.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.6.2"
   },
   "devDependencies": {
     "supertest": "^7.2.2"

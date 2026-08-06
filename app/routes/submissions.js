@@ -7,10 +7,18 @@ function submissionsRouter(db) {
     const campaign = db.prepare('SELECT * FROM campaigns WHERE slug = ?').get(req.params.slug);
     if (!campaign) return res.status(404).send('Campaign not found');
 
+    const playerName = (req.body.player_name || '').trim();
+    const title = (req.body.title || '').trim();
+    const body = (req.body.body || '').trim();
+    if (!playerName || !title || !body) return res.status(400).send('Missing required fields');
+    if (playerName.length > 100 || title.length > 100 || body.length > 10000) {
+      return res.status(400).send('Submission exceeds allowed length');
+    }
+
     db.prepare(
       `INSERT INTO submissions (campaign_id, player_name, title, body, status, created_at)
        VALUES (?, ?, ?, ?, 'pending', ?)`
-    ).run(campaign.id, req.body.player_name, req.body.title, req.body.body, new Date().toISOString());
+    ).run(campaign.id, playerName, title, body, new Date().toISOString());
 
     res.redirect(`/c/${campaign.slug}`);
   });
@@ -28,6 +36,9 @@ function submissionsRouter(db) {
 
     const now = new Date().toISOString();
     const decision = req.body.decision;
+    if (!['approved', 'rejected', 'converted'].includes(decision)) {
+      return res.status(400).send('Invalid decision');
+    }
 
     db.prepare('UPDATE submissions SET status = ? WHERE id = ?').run(decision, submission.id);
     db.prepare(
