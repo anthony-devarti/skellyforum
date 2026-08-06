@@ -1,0 +1,24 @@
+<%- include('../partials-head') %>
+<header><h1>Moderation Queue</h1></header>
+<main>
+  <p><a href="/admin/campaigns/<%= campaignId %>">← Back to campaign</a></p>
+  <% submissions.forEach(function(s){ %>
+    <div class="card">
+      <h3><%= s.title %> <small>(<%= s.status %>)</small></h3>
+      <p><strong><%= s.player_name %>:</strong> <%= s.body %></p>
+      <form method="post" action="/admin/submissions/<%= s.id %>/review" class="grid">
+        <input name="reviewer" placeholder="reviewer" value="storyteller" />
+        <select name="decision">
+          <option value="approved">approve</option>
+          <option value="rejected">reject</option>
+          <option value="converted">convert</option>
+        </select>
+        <input name="thread_id" placeholder="thread id for conversion" />
+        <input name="position" type="number" value="999" />
+        <textarea name="notes" placeholder="notes"></textarea>
+        <button>Submit Review</button>
+      </form>
+    </div>
+  <% }) %>
+</main>
+<%- include('../partials-foot') %>

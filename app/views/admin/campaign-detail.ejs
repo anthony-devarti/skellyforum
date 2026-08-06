@@ -1,0 +1,82 @@
+<%- include('../partials-head') %>
+<header><h1><%= campaign.name %> (Admin)</h1></header>
+<main>
+  <p><a href="/admin/campaigns">← Back to campaigns</a> | <a href="/c/<%= campaign.slug %>">Open player view</a> | <a href="/admin/reveal/history/<%= campaign.id %>">Reveal History</a> | <a href="/admin/submissions/<%= campaign.id %>">Submissions</a></p>
+
+  <div class="card">
+    <h3>Continuity Warnings</h3>
+    <% if (warnings.length === 0) { %><p>None.</p><% } %>
+    <% warnings.forEach(function(w){ %><div><strong><%= w.type %></strong>: <%= w.message %></div><% }) %>
+  </div>
+
+  <div class="card grid">
+    <h3>Create Category</h3>
+    <form method="post" action="/admin/campaigns/<%= campaign.id %>/categories" class="grid">
+      <input name="title" placeholder="Category title" required />
+      <input name="position" type="number" value="0" />
+      <button>Create Category</button>
+    </form>
+  </div>
+
+  <div class="card grid">
+    <h3>Create Thread</h3>
+    <form method="post" action="/admin/campaigns/<%= campaign.id %>/threads" class="grid">
+      <select name="category_id" required>
+        <% categories.forEach(function(cat){ %><option value="<%= cat.id %>"><%= cat.title %></option><% }) %>
+      </select>
+      <input name="title" placeholder="Thread title" required />
+      <input name="milestone_tag" placeholder="Milestone tag" />
+      <select name="status"><option value="draft">draft</option><option value="published">published</option></select>
+      <button>Create Thread</button>
+    </form>
+  </div>
+
+  <div class="card grid">
+    <h3>Create Post</h3>
+    <form method="post" action="/admin/campaigns/<%= campaign.id %>/posts" class="grid">
+      <select name="thread_id" required>
+        <% threads.forEach(function(t){ %><option value="<%= t.id %>"><%= t.title %></option><% }) %>
+      </select>
+      <input name="author_name" placeholder="Author" required />
+      <textarea name="body" required></textarea>
+      <input name="position" type="number" value="0" />
+      <input name="backdated_at" type="datetime-local" />
+      <select name="status"><option value="draft">draft</option><option value="published">published</option></select>
+      <button>Create Post</button>
+    </form>
+  </div>
+
+  <div class="card grid">
+    <h3>Batch Reveal by Milestone</h3>
+    <form method="post" action="/admin/campaigns/<%= campaign.id %>/reveal/batch" class="grid">
+      <input name="milestone_tag" placeholder="milestone tag" required />
+      <select name="action"><option value="reveal">reveal</option><option value="hide">hide</option></select>
+      <input name="reason" placeholder="Reason" />
+      <button>Apply</button>
+    </form>
+  </div>
+
+  <h3>Threads</h3>
+  <% threads.forEach(function(t){ %>
+    <div class="card">
+      <h4>#<%= t.id %> <%= t.title %> <small>[<%= t.status %> | visible:<%= t.manual_visible %>]</small></h4>
+      <form method="post" action="/admin/reveal/thread/<%= t.id %>"><input name="reason" placeholder="reason" /><button>Toggle Reveal</button></form>
+      <% posts.filter((p) => p.thread_id === t.id).forEach(function(p){ %>
+        <div class="card">
+          <strong>Post #<%= p.id %></strong> by <%= p.author_name %>
+          <form method="post" action="/admin/posts/<%= p.id %>/update" class="grid">
+            <input type="hidden" name="campaign_id" value="<%= campaign.id %>" />
+            <textarea name="body"><%= p.body %></textarea>
+            <input name="position" type="number" value="<%= p.position %>" />
+            <input name="backdated_at" type="datetime-local" value="<%= p.backdated_at ? p.backdated_at.substring(0,16) : '' %>" />
+            <select name="status"><option value="draft" <%= p.status==='draft'?'selected':'' %>>draft</option><option value="published" <%= p.status==='published'?'selected':'' %>>published</option></select>
+            <select name="manual_visible"><option value="1" <%= p.manual_visible===1?'selected':'' %>>visible</option><option value="0" <%= p.manual_visible===0?'selected':'' %>>hidden</option></select>
+            <button>Save Post</button>
+          </form>
+          <form method="post" action="/admin/reveal/post/<%= p.id %>"><input name="reason" placeholder="reason" /><button>Toggle Reveal</button></form>
+        </div>
+      <% }) %>
+    </div>
+  <% }) %>
+</main>
+<%- include('../partials-foot') %>

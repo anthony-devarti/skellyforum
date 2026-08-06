@@ -1,0 +1,25 @@
+<%- include('../partials-head') %>
+<header><h1>Storyteller Admin: Campaigns</h1></header>
+<main>
+  <div class="card">
+    <form method="post" action="/admin/campaigns" class="grid">
+      <input name="name" placeholder="Campaign name" required />
+      <input name="slug" placeholder="Slug (optional)" />
+      <textarea name="description" placeholder="Description"></textarea>
+      <button type="submit">Create campaign</button>
+    </form>
+  </div>
+
+  <% campaigns.forEach(function(c) { %>
+    <div class="card">
+      <h3><%= c.name %> <small>(/<%= c.slug %>)</small></h3>
+      <p><%= c.description %></p>
+      <a href="/admin/campaigns/<%= c.id %>">Manage</a>
+      <form style="display:inline" method="post" action="/admin/campaigns/<%= c.id %>/archive"><button>Archive</button></form>
+      <form style="display:inline" method="post" action="/admin/campaigns/<%= c.id %>/duplicate"><button>Duplicate</button></form>
+      <form style="display:inline" method="post" action="/admin/campaigns/<%= c.id %>/export"><button>Export JSON</button></form>
+      <a href="/c/<%= c.slug %>">Player View</a>
+    </div>
+  <% }) %>
+</main>
+<%- include('../partials-foot') %>

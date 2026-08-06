@@ -1,0 +1,27 @@
+<%- include('../partials-head') %>
+<header><h1><%= campaign.name %></h1><p><%= campaign.description %></p></header>
+<main>
+  <nav><a href="/c/<%= campaign.slug %>/search">Search</a></nav>
+  <% categories.forEach(function(c){ %>
+    <div class="card">
+      <h2><%= c.title %></h2>
+      <% threads.filter((t)=>t.category_id===c.id).forEach(function(t){ %>
+        <div>
+          <a href="/c/<%= campaign.slug %>/thread/<%= t.id %>"><%= t.title %></a>
+          <small>Started by: <%= t.metadata.startedBy || 'Unknown' %> | Replies: <%= t.metadata.replies %> | Views: <%= t.metadata.views %> | Last post: <%= t.metadata.lastPostBy || '-' %></small>
+        </div>
+      <% }) %>
+    </div>
+  <% }) %>
+
+  <div class="card">
+    <h3>Submit clue/question</h3>
+    <form method="post" action="/c/<%= campaign.slug %>/submissions" class="grid">
+      <input name="player_name" placeholder="Your handle" required />
+      <input name="title" placeholder="Title" required />
+      <textarea name="body" placeholder="Clue/question" required></textarea>
+      <button>Submit for moderation</button>
+    </form>
+  </div>
+</main>
+<%- include('../partials-foot') %>

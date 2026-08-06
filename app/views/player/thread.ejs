@@ -1,0 +1,12 @@
+<%- include('../partials-head') %>
+<header><h1><%= thread.title %></h1><p><a href="/c/<%= campaign.slug %>">← Back</a></p></header>
+<main>
+  <% posts.forEach(function(p){ %>
+    <div class="card">
+      <strong><%= p.author_name %></strong>
+      <small><%= p.backdated_at || p.created_at %></small>
+      <p><%= p.body %></p>
+    </div>
+  <% }) %>
+</main>
+<%- include('../partials-foot') %>
